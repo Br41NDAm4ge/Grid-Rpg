@@ -45,6 +45,15 @@
     width: 100%;
 }
 
+input[type="color"] {
+    height: 35px;
+    padding: 2px;
+    border-radius: 6px;
+    border: 1px solid #323238;
+    background-color: #0c0d12;
+    cursor: pointer;
+}
+
 .btn-add-token {
     padding: 8px;
     background: linear-gradient(135deg, #27ae60, #1e8449);
@@ -103,7 +112,7 @@
     border-radius: 50%;
     border: 3px solid #ffd700;
     object-fit: cover;
-    box-shadow: 0 0 8px rgba(255, 215, 0, 0.5);
+    box-shadow: 0 0 8px rgba(0, 0, 0, 0.5);
     background-color: #000;
     flex-shrink: 0;
 }
@@ -164,6 +173,7 @@
 }
 
 .grid-token.selected .grid-token-img {
-    border-color: #00d2df;
+    outline: 3px solid #00d2df;
+    outline-offset: 2px;
     box-shadow: 0 0 15px #00d2df, 0 4px 12px rgba(0, 0, 0, 0.8);
 }

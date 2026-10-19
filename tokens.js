@@ -10,10 +10,12 @@ document.addEventListener('DOMContentLoaded', () => {
 function addTokenFromForm() {
     const nameInput = document.getElementById('token-name');
     const sizeSelect = document.getElementById('token-size');
+    const colorInput = document.getElementById('token-color');
     const fileInput = document.getElementById('token-file');
 
     const name = nameInput.value.trim() || 'Personagem';
     const size = parseInt(sizeSelect.value) || 1;
+    const color = colorInput ? colorInput.value : '#ffd700';
 
     if (!fileInput.files || !fileInput.files[0]) {
         alert('Por favor, selecione uma imagem para o token!');
@@ -24,12 +26,12 @@ function addTokenFromForm() {
     const reader = new FileReader();
 
     reader.onload = function (e) {
-        // Recorta a imagem circularmente via Canvas
-        cropImageToCircle(e.target.result, (circularSrc) => {
+        cropImageToCircle(e.target.result, color, (circularSrc) => {
             const newToken = {
                 id: 'token_' + Date.now(),
                 name: name,
                 size: size,
+                color: color,
                 imageSrc: circularSrc
             };
 
@@ -44,8 +46,8 @@ function addTokenFromForm() {
     reader.readAsDataURL(file);
 }
 
-// Recorta e gera a imagem física em círculo com borda dourada
-function cropImageToCircle(imageSrc, callback) {
+// Recorta a imagem em círculo e aplica a cor de moldura escolhida
+function cropImageToCircle(imageSrc, borderColor, callback) {
     const img = new Image();
     img.onload = () => {
         const canvas = document.createElement('canvas');
@@ -58,13 +60,12 @@ function cropImageToCircle(imageSrc, callback) {
         const startX = (img.width - minDim) / 2;
         const startY = (img.height - minDim) / 2;
 
-        // Máscara Circular
+        // Recorte circular da imagem
         ctx.beginPath();
-        ctx.arc(size / 2, size / 2, size / 2, 0, Math.PI * 2);
+        ctx.arc(size / 2, size / 2, size / 2 - 4, 0, Math.PI * 2);
         ctx.closePath();
         ctx.clip();
 
-        // Desenha a imagem cortada
         ctx.drawImage(img, startX, startY, minDim, minDim, 0, 0, size, size);
 
         callback(canvas.toDataURL('image/png'));
@@ -72,7 +73,7 @@ function cropImageToCircle(imageSrc, callback) {
     img.src = imageSrc;
 }
 
-// Renderiza o item do token na barra lateral
+// Renderiza o item na sidebar com a borda colorida
 function renderSidebarToken(token) {
     const tokenList = document.getElementById('token-list');
 
@@ -82,14 +83,13 @@ function renderSidebarToken(token) {
     item.dataset.tokenId = token.id;
 
     item.innerHTML = `
-        <img class="sidebar-token-avatar" src="${token.imageSrc}" alt="${token.name}">
+        <img class="sidebar-token-avatar" src="${token.imageSrc}" alt="${token.name}" style="border-color: ${token.color};">
         <div class="sidebar-token-info">
             <span class="sidebar-token-name">${token.name}</span>
             <span class="sidebar-token-size">Tamanho: ${token.size}x${token.size}</span>
         </div>
     `;
 
-    // Eventos de Arrastar (Drag & Drop)
     item.addEventListener('dragstart', (e) => {
         e.dataTransfer.setData('application/json', JSON.stringify(token));
     });
@@ -97,7 +97,7 @@ function renderSidebarToken(token) {
     tokenList.appendChild(item);
 }
 
-// Prepara a área do Grid para aceitar a soltura do token
+// Prepara o evento de drop
 function setupGridDropEvents() {
     const gridContainer = document.getElementById('grid-container');
 
@@ -114,7 +114,6 @@ function setupGridDropEvents() {
         const grid = document.getElementById('grid');
         const rect = grid.getBoundingClientRect();
 
-        // Calcula coluna e linha relativas ao grid
         const col = Math.floor((e.clientX - rect.left) / TILE_SIZE);
         const row = Math.floor((e.clientY - rect.top) / TILE_SIZE);
 
@@ -127,7 +126,7 @@ function setupGridDropEvents() {
     });
 }
 
-// Cria o Token por cima do Grid
+// Cria o Token no Grid
 function spawnTokenOnGrid(tokenData, col, row) {
     const grid = document.getElementById('grid');
 
@@ -144,9 +143,11 @@ function spawnTokenOnGrid(tokenData, col, row) {
     tokenElem.style.left = `${col * TILE_SIZE}px`;
     tokenElem.style.top = `${row * TILE_SIZE}px`;
 
+    const borderColor = tokenData.color || '#ffd700';
+
     tokenElem.innerHTML = `
-        <img class="grid-token-img" src="${tokenData.imageSrc}" alt="${tokenData.name}">
-        <div class="grid-token-label">${tokenData.name}</div>
+        <img class="grid-token-img" src="${tokenData.imageSrc}" alt="${tokenData.name}" style="border-color: ${borderColor};">
+        <div class="grid-token-label" style="border-color: ${borderColor};">${tokenData.name}</div>
     `;
 
     tokenElem.addEventListener('click', (e) => {
@@ -166,6 +167,13 @@ function selectGridToken(tokenElem) {
     selectedGridToken.classList.add('selected');
 }
 
+// Limpa todos os tokens do grid (chamado ao criar um novo terreno)
+function clearAllGridTokens() {
+    const tokensOnGrid = document.querySelectorAll('.grid-token');
+    tokensOnGrid.forEach(t => t.remove());
+    selectedGridToken = null;
+}
+
 document.addEventListener('click', (e) => {
     if (!e.target.closest('.grid-token') && selectedGridToken) {
         selectedGridToken.classList.remove('selected');
@@ -173,9 +181,14 @@ document.addEventListener('click', (e) => {
     }
 });
 
-// Movimentação pelas setas do teclado
+// Movimentação por setas e exclusão com Backspace ou Delete
 document.addEventListener('keydown', (e) => {
     if (!selectedGridToken) return;
+
+    // Se o usuário estiver digitando em um campo de texto, ignora o comando
+    if (document.activeElement.tagName === 'INPUT' || document.activeElement.tagName === 'SELECT') {
+        return;
+    }
 
     const cols = parseInt(document.getElementById('grid-cols').value) || 22;
     const rows = parseInt(document.getElementById('grid-rows').value) || 16;
@@ -202,7 +215,8 @@ document.addEventListener('keydown', (e) => {
             e.preventDefault();
             break;
         case 'Delete':
-        case 'Backspace':
+        case 'Backspace': // Tecla de apagar caractere
+            e.preventDefault();
             selectedGridToken.remove();
             selectedGridToken = null;
             return;
