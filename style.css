@@ -2,12 +2,12 @@
     box-sizing: border-box;
     margin: 0;
     padding: 0;
-    font-family: Arial, sans-serif;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
 body {
-    background-color: #1e1e1e;
-    color: #ffffff;
+    background-color: #0c0d12;
+    color: #e1e1e6;
     display: flex;
     flex-direction: column;
     height: 100vh;
@@ -16,76 +16,106 @@ body {
 
 /* Painel de Controle */
 #controls {
-    background-color: #2d2d2d;
-    padding: 15px;
+    background: #181920;
+    padding: 12px 20px;
     display: flex;
     flex-wrap: wrap;
     gap: 20px;
     align-items: center;
-    border-bottom: 2px solid #444;
-    box-shadow: 0 4px 6px rgba(0,0,0,0.3);
+    border-bottom: 2px solid #2a2b36;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.6);
+    z-index: 10;
 }
 
-h2 {
-    font-size: 1.2rem;
-    color: #e0e0e0;
+.panel-title h2 {
+    font-size: 1.1rem;
+    color: #00d2df;
+    text-transform: uppercase;
+    letter-spacing: 1px;
 }
 
 .control-group {
     display: flex;
     align-items: center;
-    gap: 10px;
+    gap: 8px;
+    font-size: 0.9rem;
+}
+
+.hint {
+    color: #8d8d99;
+    font-size: 0.75rem;
 }
 
 /* Botões de Terreno */
 .terrain-options {
     display: flex;
-    gap: 5px;
+    gap: 6px;
 }
 
 .terrain-btn {
     padding: 8px 12px;
-    border: 2px solid transparent;
-    border-radius: 5px;
+    border: 2px solid #2d2d38;
+    border-radius: 6px;
     cursor: pointer;
-    background-color: #3a3a3a;
-    color: white;
-    font-weight: bold;
-    transition: all 0.2s;
+    background-color: #242530;
+    color: #c4c4cc;
+    font-weight: 600;
+    font-size: 0.85rem;
+    transition: all 0.2s ease;
 }
 
 .terrain-btn:hover {
-    background-color: #505050;
+    background-color: #323342;
+    transform: translateY(-1px);
 }
 
 .terrain-btn.active {
-    border-color: #007acc;
-    background-color: #005999;
+    border-color: #00d2df;
+    background-color: #123844;
+    color: #ffffff;
+    box-shadow: 0 0 12px rgba(0, 210, 223, 0.4);
 }
 
-/* Entradas de Número */
+/* Entradas e Botão Criar */
 input[type="number"] {
     padding: 6px;
-    border-radius: 4px;
-    border: 1px solid #555;
-    background-color: #1e1e1e;
-    color: white;
+    border-radius: 6px;
+    border: 1px solid #323238;
+    background-color: #0c0d12;
+    color: #e1e1e6;
     text-align: center;
     font-weight: bold;
 }
 
-button {
-    padding: 6px 12px;
-    background-color: #28a745;
-    color: white;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    font-weight: bold;
+input[type="number"]:focus {
+    outline: none;
+    border-color: #00d2df;
 }
 
-button:hover {
-    background-color: #218838;
+.btn-create {
+    padding: 8px 16px;
+    background: linear-gradient(135deg, #00b4db, #0083b0);
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: all 0.2s;
+    box-shadow: 0 2px 10px rgba(0, 180, 219, 0.4);
+}
+
+.btn-create:hover {
+    filter: brightness(1.2);
+    transform: translateY(-1px);
+}
+
+.checkbox-label {
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    user-select: none;
+    color: #a8a8b3;
 }
 
 /* Container do Grid */
@@ -95,53 +125,92 @@ button:hover {
     justify-content: center;
     align-items: center;
     overflow: auto;
-    padding: 20px;
+    padding: 25px;
+    background: radial-gradient(circle at center, #161722 0%, #08080c 100%);
 }
 
 #grid {
     display: grid;
-    gap: 1px;
-    background-color: #111;
-    border: 2px solid #555;
+    background-color: #000;
+    border: 3px solid #323238;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.9);
     user-select: none;
 }
 
-/* Estilo das Células do Grid */
+/* Opcional: Ocultar linhas do grid */
+#grid.hide-lines .cell {
+    border-color: transparent !important;
+}
+
+/* Célula Base */
 .cell {
-    width: 35px;
-    height: 35px;
-    background-color: #2a2a2a;
+    width: 40px;
+    height: 40px;
     cursor: pointer;
-    transition: background-color 0.1s;
+    box-sizing: border-box;
+    transition: filter 0.1s ease;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    position: relative;
 }
 
-/* Tipos de Terreno */
+.cell:hover {
+    filter: brightness(1.3) contrast(1.1);
+    outline: 2px solid #00d2df;
+    z-index: 5;
+}
+
+/* --- TILES TEXTURIZADOS E COM EFEITOS VISUAIS --- */
+
+/* 🌿 Grama Vivaz */
 .cell.grama {
-    background-color: #388e3c;
-    border: 1px solid #2e7d32;
+    background-color: #2e7d32;
+    background-image: 
+        radial-gradient(circle at 30% 30%, #43a047 18%, transparent 22%),
+        radial-gradient(circle at 75% 70%, #1b5e20 20%, transparent 25%),
+        repeating-linear-gradient(45deg, rgba(76, 175, 80, 0.15) 0px, rgba(76, 175, 80, 0.15) 2px, transparent 2px, transparent 5px);
+    box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.35);
 }
 
+/* 🟫 Terra Batida */
 .cell.terra {
-    background-color: #795548;
-    border: 1px solid #5d4037;
+    background-color: #4e342e;
+    background-image: 
+        radial-gradient(circle at 25% 45%, #6d4c41 15%, transparent 20%),
+        radial-gradient(circle at 80% 25%, #3e2723 22%, transparent 28%),
+        repeating-linear-gradient(-45deg, rgba(0, 0, 0, 0.2) 0px, rgba(0, 0, 0, 0.2) 3px, transparent 3px, transparent 7px);
+    box-shadow: inset 0 0 7px rgba(0, 0, 0, 0.5);
 }
 
+/* 🟨 Areia Dourada */
 .cell.areia {
-    background-color: #fbc02d;
-    border: 1px solid #f57f17;
+    background-color: #e6c875;
+    background-image: 
+        radial-gradient(circle at 50% 40%, #fff176 12%, transparent 35%),
+        radial-gradient(circle at 20% 80%, #f57f17 18%, transparent 30%),
+        linear-gradient(135deg, #fbc02d 0%, #e65100 100%);
+    box-shadow: inset 0 0 5px rgba(120, 60, 0, 0.3);
 }
 
+/* 🏰 Pedra / Tijolo de Castelo */
 .cell.pedra {
-    background-color: #78909c;
-    border: 1px solid #546e7a;
+    background-color: #546e7a;
+    background-image: 
+        linear-gradient(90deg, rgba(0,0,0,0.4) 2px, transparent 2px),
+        linear-gradient(rgba(0,0,0,0.4) 2px, transparent 2px),
+        linear-gradient(135deg, #78909c 0%, #37474f 100%);
+    background-size: 20px 20px, 20px 20px, 100% 100%;
+    box-shadow: inset 0 0 8px rgba(0, 0, 0, 0.6);
 }
 
+/* 💀 Masmorra Sombria */
 .cell.masmorra {
-    background-color: #263238;
-    border: 1px solid #102027;
-    /* Padrão visual escuro para masmorra */
-    background-image: linear-gradient(45deg, #1f292d 25%, transparent 25%, transparent 75%, #1f292d 75%, #1f292d), 
-                      linear-gradient(45deg, #1f292d 25%, transparent 25%, transparent 75%, #1f292d 75%, #1f292d);
-    background-size: 8px 8px;
-    background-position: 0 0, 4px 4px;
+    background-color: #171922;
+    background-image: 
+        radial-gradient(circle at 50% 50%, rgba(255, 87, 34, 0.08) 0%, transparent 70%),
+        linear-gradient(45deg, #0d0e14 25%, transparent 25%, transparent 75%, #0d0e14 75%),
+        linear-gradient(45deg, #0d0e14 25%, transparent 25%, transparent 75%, #0d0e14 75%);
+    background-size: 100% 100%, 16px 16px, 16px 16px;
+    background-position: 0 0, 0 0, 8px 8px;
+    box-shadow: inset 0 0 10px rgba(0,0,0,0.95);
+    border-color: rgba(0, 0, 0, 0.5);
 }

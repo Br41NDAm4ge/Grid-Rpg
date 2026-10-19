@@ -9,41 +9,51 @@
 <body>
 
     <!-- Painel de Controle Superior -->
-    <div id="controls">
-        <h2>Painel do Mestre</h2>
+    <header id="controls">
+        <div class="panel-title">
+            <h2>⚔️ Grid RPG do Mestre</h2>
+        </div>
 
-        <!-- Seleção de Terreno -->
+        <!-- Seleção do Terreno -->
         <div class="control-group">
-            <label>Selecione o Terreno:</label>
+            <label>Terreno Ativo:</label>
             <div class="terrain-options">
                 <button class="terrain-btn active" data-type="grama" onclick="selectTerrain('grama', this)">🌿 Grama</button>
                 <button class="terrain-btn" data-type="terra" onclick="selectTerrain('terra', this)">🟫 Terra</button>
                 <button class="terrain-btn" data-type="areia" onclick="selectTerrain('areia', this)">🟨 Areia</button>
-                <button class="terrain-btn" data-type="pedra" onclick="selectTerrain('pedra', this)">🏰 Pedra (Castelo)</button>
+                <button class="terrain-btn" data-type="pedra" onclick="selectTerrain('pedra', this)">🏰 Pedra</button>
                 <button class="terrain-btn" data-type="masmorra" onclick="selectTerrain('masmorra', this)">💀 Masmorra</button>
             </div>
         </div>
 
-        <!-- Ferramenta de Pintura por Tamanho (Área Quadrada) -->
+        <!-- Ferramenta de Pincel -->
         <div class="control-group">
-            <label for="brush-size">Criar terreno de tamanho:</label>
+            <label for="brush-size">Tamanho do Pincel:</label>
             <input type="number" id="brush-size" value="1" min="1" max="10">
-            <small>(1 = 1x1, 2 = 2x2, etc.)</small>
+            <small class="hint">(1x1, 2x2, etc.)</small>
         </div>
 
-        <!-- Redimensionar Grid Inteiro -->
+        <!-- Redimensionar / Novo Grid -->
         <div class="control-group">
-            <label>Tamanho do Grid:</label>
-            <input type="number" id="grid-cols" value="20" min="5" max="50" style="width: 60px;"> x 
-            <input type="number" id="grid-rows" value="20" min="5" max="50" style="width: 60px;">
-            <button onclick="resizeGrid()">Criar Novo Grid</button>
+            <label>Novo Grid:</label>
+            <input type="number" id="grid-cols" value="20" min="5" max="50" style="width: 55px;" title="Colunas"> x 
+            <input type="number" id="grid-rows" value="20" min="5" max="50" style="width: 55px;" title="Linhas">
+            <button class="btn-create" onclick="resizeGrid()">✨ Criar Novo Grid</button>
         </div>
-    </div>
+
+        <!-- Opção de Linhas -->
+        <div class="control-group">
+            <label class="checkbox-label">
+                <input type="checkbox" id="toggle-grid-lines" checked onchange="toggleGridLines()">
+                Linhas do Grid
+            </label>
+        </div>
+    </header>
 
     <!-- Área onde o Grid será desenhado -->
-    <div id="grid-container">
+    <main id="grid-container">
         <div id="grid"></div>
-    </div>
+    </main>
 
     <script src="script.js"></script>
 </body>
