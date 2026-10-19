@@ -5,7 +5,7 @@ document.addEventListener('DOMContentLoaded', () => {
     generateProceduralTerrain();
     
     document.body.addEventListener('mousedown', (e) => {
-        if (e.target.closest('#controls')) return;
+        if (e.target.closest('#controls') || e.target.closest('#sidebar')) return;
         isMouseDown = true;
     });
 
@@ -27,22 +27,20 @@ function generateProceduralTerrain() {
     const genType = document.getElementById('gen-type').value;
     const grid = document.getElementById('grid');
 
+    // Limpa apenas as células de mapa, mantendo tokens se necessário
     grid.innerHTML = '';
     grid.style.gridTemplateColumns = `repeat(${cols}, 40px)`;
     grid.style.gridTemplateRows = `repeat(${rows}, 40px)`;
 
-    // Matriz 2D temporária
     let map = Array(rows).fill(null).map(() => Array(cols).fill('grama'));
 
     if (genType === 'grama') {
-        // Preenche com Grama e adiciona poças orgânicas d'água e caminho de terra
         for (let r = 0; r < rows; r++) {
             for (let c = 0; c < cols; c++) {
                 map[r][c] = 'grama';
             }
         }
 
-        // Gerar 2 a 4 poças d'água circulares/orgânicas
         const numPuddles = Math.floor(Math.random() * 3) + 2;
         for (let p = 0; p < numPuddles; p++) {
             const centerX = Math.floor(Math.random() * (cols - 4)) + 2;
@@ -55,35 +53,32 @@ function generateProceduralTerrain() {
                     if (dist < radius + (Math.random() * 0.5)) {
                         map[r][c] = 'agua';
                     } else if (dist < radius + 1.2 && map[r][c] !== 'agua') {
-                        map[r][c] = 'terra'; // Borda de terra úmida ao redor da poça
+                        map[r][c] = 'terra';
                     }
                 }
             }
         }
     } 
     else if (genType === 'castelo') {
-        // Gera um Castelo com pátio interno e muralhas de pedra com cantos
         for (let r = 0; r < rows; r++) {
             for (let c = 0; c < cols; c++) {
                 if (r === 0 || r === rows - 1 || c === 0 || c === cols - 1 || r === 1 || r === rows - 2 || c === 1 || c === cols - 2) {
-                    map[r][c] = 'pedra'; // Paredes exteriores
+                    map[r][c] = 'pedra';
                 } else if ((r === 2 || r === rows - 3) && (c > 3 && c < cols - 4)) {
                     map[r][c] = 'pedra';
                 } else {
-                    map[r][c] = (Math.random() > 0.8) ? 'terra' : 'areia'; // Pátio
+                    map[r][c] = (Math.random() > 0.8) ? 'terra' : 'areia';
                 }
             }
         }
     } 
     else if (genType === 'masmorra') {
-        // Gera câmaras escavadas de masmorra
         for (let r = 0; r < rows; r++) {
             for (let c = 0; c < cols; c++) {
-                map[r][c] = 'pedra'; // Paredes densas
+                map[r][c] = 'pedra';
             }
         }
 
-        // Escavar salas com piso de masmorra
         const numRooms = 4;
         for (let i = 0; i < numRooms; i++) {
             const w = Math.floor(Math.random() * 4) + 4;
@@ -99,7 +94,7 @@ function generateProceduralTerrain() {
         }
     }
 
-    // Renderizar no DOM e aplicar suavização nas bordas
+    // Renderizar Células no DOM
     for (let r = 0; r < rows; r++) {
         for (let c = 0; c < cols; c++) {
             const cell = document.createElement('div');
@@ -109,7 +104,6 @@ function generateProceduralTerrain() {
             cell.dataset.row = r;
             cell.dataset.col = c;
 
-            // Arredondamento dinâmico de bordas conforme os vizinhos
             applyOrganicCorners(cell, map, r, c, rows, cols, type);
 
             cell.addEventListener('mousedown', () => paintArea(r, c, cols, rows));
@@ -120,9 +114,11 @@ function generateProceduralTerrain() {
             grid.appendChild(cell);
         }
     }
+
+    // Eventos de Drop do Grid
+    setupGridDropEvents();
 }
 
-// Aplica cantos arredondados suavizados quando o terreno muda
 function applyOrganicCorners(cell, map, r, c, maxR, maxC, type) {
     const topSame = r > 0 && map[r-1][c] === type;
     const bottomSame = r < maxR - 1 && map[r+1][c] === type;

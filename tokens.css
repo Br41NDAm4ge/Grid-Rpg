@@ -1,0 +1,185 @@
+/* Sidebar de Tokens */
+#sidebar {
+    width: 260px;
+    background: #14151c;
+    border-right: 2px solid #2a2b36;
+    padding: 15px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    overflow-y: auto;
+    z-index: 10;
+}
+
+#sidebar h3 {
+    font-size: 1rem;
+    color: #00d2df;
+    border-bottom: 1px solid #2a2b36;
+    padding-bottom: 8px;
+}
+
+#sidebar h4 {
+    font-size: 0.9rem;
+    color: #a8a8b3;
+    margin-top: 5px;
+}
+
+.token-form {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.form-group label {
+    font-size: 0.78rem;
+    color: #a8a8b3;
+}
+
+.form-group input, .form-group select {
+    width: 100%;
+}
+
+input[type="file"] {
+    font-size: 0.75rem;
+    color: #c4c4cc;
+}
+
+.btn-add-token {
+    padding: 8px;
+    background: linear-gradient(135deg, #27ae60, #1e8449);
+    color: white;
+    border: none;
+    border-radius: 6px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: filter 0.2s;
+}
+
+.btn-add-token:hover {
+    filter: brightness(1.2);
+}
+
+.divider {
+    border: 0;
+    height: 1px;
+    background: #2a2b36;
+}
+
+/* Item de Token na Barra Lateral */
+#token-list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.sidebar-token-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background: #1e1f29;
+    padding: 8px;
+    border-radius: 8px;
+    border: 1px solid #2d2d38;
+    cursor: grab;
+    transition: transform 0.2s, border-color 0.2s;
+    user-select: none;
+}
+
+.sidebar-token-item:hover {
+    transform: translateX(3px);
+    border-color: #00d2df;
+}
+
+.sidebar-token-item:active {
+    cursor: grabbing;
+}
+
+.sidebar-token-avatar {
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    border: 2px solid #ffd700;
+    object-fit: cover;
+    box-shadow: 0 0 6px rgba(255, 215, 0, 0.4);
+}
+
+.sidebar-token-info {
+    display: flex;
+    flex-direction: column;
+}
+
+.sidebar-token-name {
+    font-size: 0.85rem;
+    font-weight: bold;
+    color: #ffffff;
+}
+
+.sidebar-token-size {
+    font-size: 0.7rem;
+    color: #00d2df;
+}
+
+/* ===================================================
+   TOKEN COLOCADO DENTRO DO GRID (ELEMENTO SOBREPOSTO)
+   =================================================== */
+
+.grid-token {
+    position: absolute;
+    z-index: 20;
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    transition: transform 0.15s ease, box-shadow 0.2s ease;
+    user-select: none;
+}
+
+/* Imagem Circular do Token */
+.grid-token-img {
+    width: 90%;
+    height: 90%;
+    border-radius: 50%;
+    border: 3px solid #ffd700;
+    object-fit: cover;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.8);
+    pointer-events: none;
+    background-color: #000;
+}
+
+/* Nome do Personagem abaixo do Token */
+.grid-token-label {
+    position: absolute;
+    bottom: -6px;
+    background: rgba(0, 0, 0, 0.85);
+    color: #fff;
+    font-size: 0.65rem;
+    font-weight: bold;
+    padding: 1px 6px;
+    border-radius: 8px;
+    border: 1px solid #ffd700;
+    white-space: nowrap;
+    pointer-events: none;
+}
+
+/* Token Selecionado com as Setinhas */
+.grid-token.selected {
+    z-index: 30;
+}
+
+.grid-token.selected .grid-token-img {
+    border-color: #00d2df;
+    box-shadow: 0 0 15px #00d2df, 0 4px 12px rgba(0, 0, 0, 0.8);
+    animation: pulse-select 1.5s infinite alternate;
+}
+
+@keyframes pulse-select {
+    0% { transform: scale(1); }
+    100% { transform: scale(1.05); }
+}

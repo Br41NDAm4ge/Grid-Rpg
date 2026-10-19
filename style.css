@@ -14,6 +14,14 @@ body {
     overflow: hidden;
 }
 
+/* Container que divide Sidebar e Grid */
+#main-content {
+    display: flex;
+    flex: 1;
+    overflow: hidden;
+    position: relative;
+}
+
 /* Painel Superior */
 #controls {
     background: #181920;
@@ -48,14 +56,13 @@ body {
     border: 1px solid rgba(0, 210, 223, 0.25);
 }
 
-select {
+select, input[type="text"], input[type="number"] {
     padding: 6px;
     border-radius: 6px;
     border: 1px solid #323238;
     background-color: #0c0d12;
     color: #00d2df;
     font-weight: bold;
-    cursor: pointer;
 }
 
 /* Botões de Terreno */
@@ -85,17 +92,6 @@ select {
     background-color: #123844;
     color: #ffffff;
     box-shadow: 0 0 10px rgba(0, 210, 223, 0.4);
-}
-
-/* Entradas */
-input[type="number"] {
-    padding: 5px;
-    border-radius: 6px;
-    border: 1px solid #323238;
-    background-color: #0c0d12;
-    color: #e1e1e6;
-    text-align: center;
-    font-weight: bold;
 }
 
 .btn-create {
@@ -132,6 +128,7 @@ input[type="number"] {
     overflow: auto;
     padding: 20px;
     background: radial-gradient(circle at center, #161722 0%, #08080c 100%);
+    position: relative;
 }
 
 /* O GRID */
@@ -142,6 +139,7 @@ input[type="number"] {
     border: 3px solid #323238;
     box-shadow: 0 10px 35px rgba(0,0,0,0.9);
     user-select: none;
+    position: relative;
 }
 
 /* Célula e Linhas */
@@ -168,52 +166,43 @@ input[type="number"] {
     filter: brightness(1.25);
 }
 
-/* --- BORDAS ARREDONDADAS DINÂMICAS PARA CONEXÃO DE TERRENO --- */
+/* BORDAS ARREDONDADAS DINÂMICAS */
 .cell.rounded-top-left { border-top-left-radius: 14px; }
 .cell.rounded-top-right { border-top-right-radius: 14px; }
 .cell.rounded-bottom-left { border-bottom-left-radius: 14px; }
 .cell.rounded-bottom-right { border-bottom-right-radius: 14px; }
 
-/* ===================================================
-   TEXTURAS SVG REALISTAS COM ILUMINAÇÃO E EFEITOS
-   =================================================== */
-
-/* 🌿 Grama */
+/* TEXTURAS SVG */
 .cell.grama {
     background-color: #38761d;
     background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="40" height="40"><rect width="40" height="40" fill="%2338761d"/><circle cx="10" cy="10" r="8" fill="%23479624" opacity="0.6"/><circle cx="30" cy="28" r="10" fill="%232c5e17" opacity="0.7"/><path d="M5 35 Q 8 20, 12 35 M18 38 Q 22 18, 26 38 M28 20 Q 32 5, 35 20" stroke="%235eb332" stroke-width="2" fill="none" opacity="0.8"/></svg>');
     box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.35);
 }
 
-/* 💧 Água (Poças e Lagos com ondas) */
 .cell.agua {
     background-color: #1a5276;
     background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="40" height="40"><rect width="40" height="40" fill="%231a5276"/><path d="M-10 15 Q 10 5, 30 18 T 50 10" stroke="%235dade2" stroke-width="2" fill="none" opacity="0.7"/><path d="M-10 28 Q 10 18, 30 30 T 50 22" stroke="%232980b9" stroke-width="2" fill="none" opacity="0.8"/><circle cx="12" cy="12" r="2" fill="%23ebf5fb" opacity="0.6"/></svg>');
     box-shadow: inset 0 0 8px rgba(0, 50, 100, 0.8);
 }
 
-/* 🟫 Terra */
 .cell.terra {
     background-color: #4a3222;
     background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="40" height="40"><rect width="40" height="40" fill="%234a3222"/><circle cx="8" cy="12" r="3" fill="%23332115"/><circle cx="28" cy="8" r="4.5" fill="%23664731"/><circle cx="20" cy="28" r="5" fill="%23332115"/><circle cx="34" cy="32" r="3" fill="%23664731"/><path d="M0 0 L40 40 M40 0 L0 40" stroke="%2326180f" stroke-width="1" opacity="0.15"/></svg>');
     box-shadow: inset 0 0 8px rgba(0, 0, 0, 0.6);
 }
 
-/* 🟨 Areia */
 .cell.areia {
     background-color: #d4ac0d;
     background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="40" height="40"><rect width="40" height="40" fill="%23d4ac0d"/><path d="M-10 15 Q 10 5, 30 20 T 50 10" stroke="%23f1c40f" stroke-width="4" fill="none" opacity="0.6"/><path d="M-10 32 Q 10 22, 30 35 T 50 25" stroke="%23b7950b" stroke-width="3" fill="none" opacity="0.5"/></svg>');
     box-shadow: inset 0 0 5px rgba(100, 70, 0, 0.3);
 }
 
-/* 🏰 Pedra / Parede de Castelo */
 .cell.pedra {
     background-color: #5d6d7e;
     background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="40" height="40"><rect width="40" height="40" fill="%235d6d7e"/><rect x="1" y="1" width="18" height="18" fill="%23708090" rx="2"/><rect x="21" y="1" width="18" height="18" fill="%234a5766" rx="2"/><rect x="1" y="21" width="18" height="18" fill="%234a5766" rx="2"/><rect x="21" y="21" width="18" height="18" fill="%23708090" rx="2"/><path d="M0 20 L40 20 M20 0 L20 40" stroke="%232c3e50" stroke-width="2"/></svg>');
     box-shadow: inset 0 0 8px rgba(0, 0, 0, 0.6);
 }
 
-/* 💀 Masmorra */
 .cell.masmorra {
     background-color: #1a1a24;
     background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="40" height="40"><rect width="40" height="40" fill="%231a1a24"/><rect x="2" y="2" width="36" height="36" fill="%23222330" stroke="%230d0d12" stroke-width="2" rx="2"/><circle cx="20" cy="20" r="10" fill="%23ff4500" opacity="0.08"/></svg>');

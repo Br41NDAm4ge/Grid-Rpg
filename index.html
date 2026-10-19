@@ -4,17 +4,19 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Grid de RPG para Mestre</title>
+    <!-- Estilos Principais e de Tokens -->
     <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="tokens.css">
 </head>
 <body>
 
-    <!-- Painel de Controle Superior -->
+    <!-- Painel Superior de Controle -->
     <header id="controls">
         <div class="panel-title">
             <h2>⚔️ Grid RPG</h2>
         </div>
 
-        <!-- Seleção do Terreno Manual -->
+        <!-- Terreno Manual -->
         <div class="control-group">
             <label>Pincel Manual:</label>
             <div class="terrain-options">
@@ -33,7 +35,7 @@
             <input type="number" id="brush-size" value="1" min="1" max="10">
         </div>
 
-        <!-- Gerador de Terreno Procedural -->
+        <!-- Gerador Procedural -->
         <div class="control-group generator-box">
             <label>Gerar Terreno:</label>
             <select id="gen-type">
@@ -46,7 +48,7 @@
             <button class="btn-create" onclick="generateProceduralTerrain()">✨ Gerar Terreno</button>
         </div>
 
-        <!-- Opção de Linhas -->
+        <!-- Linhas -->
         <div class="control-group">
             <label class="checkbox-label">
                 <input type="checkbox" id="toggle-grid-lines" checked onchange="toggleGridLines()">
@@ -55,11 +57,53 @@
         </div>
     </header>
 
-    <!-- Área do Grid -->
-    <main id="grid-container">
-        <div id="grid"></div>
-    </main>
+    <!-- Conteúdo Principal: Sidebar + Grid -->
+    <div id="main-content">
+        
+        <!-- Barra Lateral de Personagens/Tokens -->
+        <aside id="sidebar">
+            <h3>👤 Tokens / Personagens</h3>
 
+            <!-- Formulário de Criação -->
+            <div class="token-form">
+                <div class="form-group">
+                    <label for="token-name">Nome:</label>
+                    <input type="text" id="token-name" placeholder="Ex: Elfa Druida">
+                </div>
+
+                <div class="form-group">
+                    <label for="token-size">Tamanho no Grid:</label>
+                    <select id="token-size">
+                        <option value="1">1x1 (Médio)</option>
+                        <option value="2">2x2 (Grande)</option>
+                        <option value="3">3x3 (Enorme)</option>
+                        <option value="4">4x4 (Imenso)</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="token-file">Imagem do Rosto:</label>
+                    <input type="file" id="token-file" accept="image/*">
+                </div>
+
+                <button class="btn-add-token" onclick="addTokenFromForm()">➕ Criar Token</button>
+            </div>
+
+            <hr class="divider">
+
+            <!-- Biblioteca de Tokens Disponíveis -->
+            <h4>Tokens Salvos</h4>
+            <div id="token-list"></div>
+        </aside>
+
+        <!-- Área Central onde fica o Grid -->
+        <main id="grid-container">
+            <div id="grid"></div>
+        </main>
+    </div>
+
+    <!-- Scripts Principais -->
     <script src="script.js"></script>
+    <script src="tokens.js"></script>
 </body>
 </html>
