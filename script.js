@@ -1,12 +1,9 @@
 let currentTerrain = 'grama';
 let isMouseDown = false;
 
-// Inicialização da Aplicação
 document.addEventListener('DOMContentLoaded', () => {
-    // Cria o primeiro grid preenchido automaticamente
     resizeGrid();
     
-    // Controle global do estado do mouse (para pintar ao clicar e arrastar)
     document.body.addEventListener('mousedown', (e) => {
         if (e.target.closest('#controls')) return;
         isMouseDown = true;
@@ -17,32 +14,33 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 });
 
-// Altera o terreno selecionado no painel
 function selectTerrain(type, element) {
     currentTerrain = type;
     document.querySelectorAll('.terrain-btn').forEach(btn => btn.classList.remove('active'));
     element.classList.add('active');
 }
 
-// Gera o novo grid totalmente PINTADO com o terreno atualmente selecionado
+// Cria o grid perfeitamente alinhado e preenchido
 function resizeGrid() {
     const cols = parseInt(document.getElementById('grid-cols').value) || 20;
-    const rows = parseInt(document.getElementById('grid-rows').value) || 20;
+    const rows = parseInt(document.getElementById('grid-rows').value) || 15;
     const grid = document.getElementById('grid');
 
     grid.innerHTML = '';
+    
+    // Define linhas e colunas exatas para o CSS Grid não quebrar
     grid.style.gridTemplateColumns = `repeat(${cols}, 40px)`;
+    grid.style.gridTemplateRows = `repeat(${rows}, 40px)`;
 
     for (let r = 0; r < rows; r++) {
         for (let c = 0; c < cols; c++) {
             const cell = document.createElement('div');
             
-            // O grid já é criado pintado com o terreno atual!
+            // Gera já totalmente preenchido
             cell.className = `cell ${currentTerrain}`;
             cell.dataset.row = r;
             cell.dataset.col = c;
 
-            // Eventos do mouse para pintar células individualmente ou arrastando
             cell.addEventListener('mousedown', () => paintArea(r, c, cols, rows));
             cell.addEventListener('mouseenter', () => {
                 if (isMouseDown) {
@@ -55,7 +53,6 @@ function resizeGrid() {
     }
 }
 
-// Pinta um bloco do tamanho definido no campo "Tamanho do Pincel"
 function paintArea(startRow, startCol, maxCols, maxRows) {
     const brushSize = parseInt(document.getElementById('brush-size').value) || 1;
 
@@ -75,7 +72,6 @@ function paintArea(startRow, startCol, maxCols, maxRows) {
     }
 }
 
-// Oculta ou mostra as linhas divisórias do grid
 function toggleGridLines() {
     const showLines = document.getElementById('toggle-grid-lines').checked;
     const grid = document.getElementById('grid');

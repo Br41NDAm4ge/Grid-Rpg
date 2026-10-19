@@ -11,7 +11,7 @@
     <!-- Painel de Controle Superior -->
     <header id="controls">
         <div class="panel-title">
-            <h2>⚔️ Grid RPG do Mestre</h2>
+            <h2>⚔️ Grid RPG</h2>
         </div>
 
         <!-- Seleção do Terreno -->
@@ -30,14 +30,13 @@
         <div class="control-group">
             <label for="brush-size">Tamanho do Pincel:</label>
             <input type="number" id="brush-size" value="1" min="1" max="10">
-            <small class="hint">(1x1, 2x2, etc.)</small>
         </div>
 
         <!-- Redimensionar / Novo Grid -->
         <div class="control-group">
             <label>Novo Grid:</label>
             <input type="number" id="grid-cols" value="20" min="5" max="50" style="width: 55px;" title="Colunas"> x 
-            <input type="number" id="grid-rows" value="20" min="5" max="50" style="width: 55px;" title="Linhas">
+            <input type="number" id="grid-rows" value="15" min="5" max="50" style="width: 55px;" title="Linhas">
             <button class="btn-create" onclick="resizeGrid()">✨ Criar Novo Grid</button>
         </div>
 
@@ -50,7 +49,7 @@
         </div>
     </header>
 
-    <!-- Área onde o Grid será desenhado -->
+    <!-- Área do Grid -->
     <main id="grid-container">
         <div id="grid"></div>
     </main>

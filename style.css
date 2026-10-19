@@ -6,7 +6,7 @@
 }
 
 body {
-    background-color: #0c0d12;
+    background-color: #0d0e12;
     color: #e1e1e6;
     display: flex;
     flex-direction: column;
@@ -14,13 +14,13 @@ body {
     overflow: hidden;
 }
 
-/* Painel de Controle */
+/* Painel Superior */
 #controls {
     background: #181920;
     padding: 12px 20px;
     display: flex;
     flex-wrap: wrap;
-    gap: 20px;
+    gap: 18px;
     align-items: center;
     border-bottom: 2px solid #2a2b36;
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.6);
@@ -38,12 +38,7 @@ body {
     display: flex;
     align-items: center;
     gap: 8px;
-    font-size: 0.9rem;
-}
-
-.hint {
-    color: #8d8d99;
-    font-size: 0.75rem;
+    font-size: 0.88rem;
 }
 
 /* Botões de Terreno */
@@ -66,17 +61,16 @@ body {
 
 .terrain-btn:hover {
     background-color: #323342;
-    transform: translateY(-1px);
 }
 
 .terrain-btn.active {
     border-color: #00d2df;
     background-color: #123844;
     color: #ffffff;
-    box-shadow: 0 0 12px rgba(0, 210, 223, 0.4);
+    box-shadow: 0 0 10px rgba(0, 210, 223, 0.4);
 }
 
-/* Entradas e Botão Criar */
+/* Entradas */
 input[type="number"] {
     padding: 6px;
     border-radius: 6px;
@@ -87,11 +81,6 @@ input[type="number"] {
     font-weight: bold;
 }
 
-input[type="number"]:focus {
-    outline: none;
-    border-color: #00d2df;
-}
-
 .btn-create {
     padding: 8px 16px;
     background: linear-gradient(135deg, #00b4db, #0083b0);
@@ -100,13 +89,12 @@ input[type="number"]:focus {
     border-radius: 6px;
     cursor: pointer;
     font-weight: bold;
-    transition: all 0.2s;
+    transition: filter 0.2s;
     box-shadow: 0 2px 10px rgba(0, 180, 219, 0.4);
 }
 
 .btn-create:hover {
     filter: brightness(1.2);
-    transform: translateY(-1px);
 }
 
 .checkbox-label {
@@ -118,99 +106,87 @@ input[type="number"]:focus {
     color: #a8a8b3;
 }
 
-/* Container do Grid */
+/* Container central */
 #grid-container {
     flex: 1;
     display: flex;
     justify-content: center;
     align-items: center;
     overflow: auto;
-    padding: 25px;
+    padding: 20px;
     background: radial-gradient(circle at center, #161722 0%, #08080c 100%);
 }
 
+/* O GRID CORRIGIDO */
 #grid {
     display: grid;
+    gap: 0; /* Impede lacunas indesejadas */
     background-color: #000;
     border: 3px solid #323238;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.9);
+    box-shadow: 0 10px 35px rgba(0,0,0,0.9);
     user-select: none;
 }
 
-/* Opcional: Ocultar linhas do grid */
-#grid.hide-lines .cell {
-    border-color: transparent !important;
-}
-
-/* Célula Base */
+/* Célula e Linhas do Grid */
 .cell {
     width: 40px;
     height: 40px;
     cursor: pointer;
     box-sizing: border-box;
-    transition: filter 0.1s ease;
-    border: 1px solid rgba(255, 255, 255, 0.08);
     position: relative;
+    background-size: cover;
+    background-position: center;
+    border: 1px solid rgba(0, 0, 0, 0.35); /* Linhas do grid */
 }
 
+/* Ocultar linhas */
+#grid.hide-lines .cell {
+    border-color: transparent !important;
+}
+
+/* Efeito ao passar o mouse */
 .cell:hover {
-    filter: brightness(1.3) contrast(1.1);
     outline: 2px solid #00d2df;
+    outline-offset: -2px;
     z-index: 5;
+    filter: brightness(1.2);
 }
 
-/* --- TILES TEXTURIZADOS E COM EFEITOS VISUAIS --- */
+/* ===================================================
+   TEXTURAS SVG REALISTAS COM ILUMINAÇÃO E EFEITOS
+   =================================================== */
 
-/* 🌿 Grama Vivaz */
+/* 🌿 Grama */
 .cell.grama {
-    background-color: #2e7d32;
-    background-image: 
-        radial-gradient(circle at 30% 30%, #43a047 18%, transparent 22%),
-        radial-gradient(circle at 75% 70%, #1b5e20 20%, transparent 25%),
-        repeating-linear-gradient(45deg, rgba(76, 175, 80, 0.15) 0px, rgba(76, 175, 80, 0.15) 2px, transparent 2px, transparent 5px);
-    box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.35);
+    background-color: #38761d;
+    background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="40" height="40"><rect width="40" height="40" fill="%2338761d"/><circle cx="10" cy="10" r="8" fill="%23479624" opacity="0.6"/><circle cx="30" cy="28" r="10" fill="%232c5e17" opacity="0.7"/><path d="M5 35 Q 8 20, 12 35 M18 38 Q 22 18, 26 38 M28 20 Q 32 5, 35 20" stroke="%235eb332" stroke-width="2" fill="none" opacity="0.8"/></svg>');
+    box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.4);
 }
 
-/* 🟫 Terra Batida */
+/* 🟫 Terra */
 .cell.terra {
-    background-color: #4e342e;
-    background-image: 
-        radial-gradient(circle at 25% 45%, #6d4c41 15%, transparent 20%),
-        radial-gradient(circle at 80% 25%, #3e2723 22%, transparent 28%),
-        repeating-linear-gradient(-45deg, rgba(0, 0, 0, 0.2) 0px, rgba(0, 0, 0, 0.2) 3px, transparent 3px, transparent 7px);
-    box-shadow: inset 0 0 7px rgba(0, 0, 0, 0.5);
-}
-
-/* 🟨 Areia Dourada */
-.cell.areia {
-    background-color: #e6c875;
-    background-image: 
-        radial-gradient(circle at 50% 40%, #fff176 12%, transparent 35%),
-        radial-gradient(circle at 20% 80%, #f57f17 18%, transparent 30%),
-        linear-gradient(135deg, #fbc02d 0%, #e65100 100%);
-    box-shadow: inset 0 0 5px rgba(120, 60, 0, 0.3);
-}
-
-/* 🏰 Pedra / Tijolo de Castelo */
-.cell.pedra {
-    background-color: #546e7a;
-    background-image: 
-        linear-gradient(90deg, rgba(0,0,0,0.4) 2px, transparent 2px),
-        linear-gradient(rgba(0,0,0,0.4) 2px, transparent 2px),
-        linear-gradient(135deg, #78909c 0%, #37474f 100%);
-    background-size: 20px 20px, 20px 20px, 100% 100%;
+    background-color: #4a3222;
+    background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="40" height="40"><rect width="40" height="40" fill="%234a3222"/><circle cx="8" cy="12" r="3" fill="%23332115"/><circle cx="28" cy="8" r="4.5" fill="%23664731"/><circle cx="20" cy="28" r="5" fill="%23332115"/><circle cx="34" cy="32" r="3" fill="%23664731"/><path d="M0 0 L40 40 M40 0 L0 40" stroke="%2326180f" stroke-width="1" opacity="0.15"/></svg>');
     box-shadow: inset 0 0 8px rgba(0, 0, 0, 0.6);
 }
 
-/* 💀 Masmorra Sombria */
+/* 🟨 Areia */
+.cell.areia {
+    background-color: #d4ac0d;
+    background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="40" height="40"><rect width="40" height="40" fill="%23d4ac0d"/><path d="M-10 15 Q 10 5, 30 20 T 50 10" stroke="%23f1c40f" stroke-width="4" fill="none" opacity="0.6"/><path d="M-10 32 Q 10 22, 30 35 T 50 25" stroke="%23b7950b" stroke-width="3" fill="none" opacity="0.5"/><circle cx="15" cy="8" r="1" fill="%23fef9e7"/><circle cx="28" cy="26" r="1.5" fill="%23fef9e7"/></svg>');
+    box-shadow: inset 0 0 5px rgba(100, 70, 0, 0.3);
+}
+
+/* 🏰 Pedra (Castelo) */
+.cell.pedra {
+    background-color: #5d6d7e;
+    background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="40" height="40"><rect width="40" height="40" fill="%235d6d7e"/><rect x="1" y="1" width="18" height="18" fill="%23708090" rx="1"/><rect x="21" y="1" width="18" height="18" fill="%234a5766" rx="1"/><rect x="1" y="21" width="18" height="18" fill="%234a5766" rx="1"/><rect x="21" y="21" width="18" height="18" fill="%23708090" rx="1"/><path d="M0 20 L40 20 M20 0 L20 40" stroke="%232c3e50" stroke-width="2"/></svg>');
+    box-shadow: inset 0 0 8px rgba(0, 0, 0, 0.6);
+}
+
+/* 💀 Masmorra */
 .cell.masmorra {
-    background-color: #171922;
-    background-image: 
-        radial-gradient(circle at 50% 50%, rgba(255, 87, 34, 0.08) 0%, transparent 70%),
-        linear-gradient(45deg, #0d0e14 25%, transparent 25%, transparent 75%, #0d0e14 75%),
-        linear-gradient(45deg, #0d0e14 25%, transparent 25%, transparent 75%, #0d0e14 75%);
-    background-size: 100% 100%, 16px 16px, 16px 16px;
-    background-position: 0 0, 0 0, 8px 8px;
-    box-shadow: inset 0 0 10px rgba(0,0,0,0.95);
-    border-color: rgba(0, 0, 0, 0.5);
+    background-color: #1a1a24;
+    background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="40" height="40"><rect width="40" height="40" fill="%231a1a24"/><rect x="2" y="2" width="36" height="36" fill="%23222330" stroke="%230d0d12" stroke-width="2"/><path d="M5 5 L35 35 M35 5 L5 35" stroke="%23111217" stroke-width="1.5"/><circle cx="20" cy="20" r="12" fill="%23ff4500" opacity="0.06"/></svg>');
+    box-shadow: inset 0 0 12px rgba(0, 0, 0, 0.9);
 }
